@@ -1,5 +1,6 @@
 var twitter = require('twitter');
 var Spotify = require('node-spotify-api');
+var request = require('request');
 var keys = require("./keys.js");
 
 var client = new twitter({
@@ -14,6 +15,8 @@ var spotify = new Spotify({
   id: keys.spotifykeys.id,
   secret: keys.spotifykeys.secret,
 });
+
+
 
 
 var command = process.argv[2];
@@ -33,7 +36,19 @@ if (command === "spotify-this-song") {
 	 	getspotify("The Sign Ace of Base");
 
 	 }
-} 
+	}
+
+if (command === "my-movie") {
+	  if (qTitle) {
+
+	 	getMovie(qTitle);
+
+} else {
+
+	getMovie("As Good as it Gets");
+ }
+}
+
 
 function gettweets() {
 
@@ -43,9 +58,12 @@ function gettweets() {
 	    
 	    for (var i = 0; i < 20; i++) {
 
+	    	console.log("----------------------------------------------------------------------------------------------------------------------------")
 	    	console.log(tweets[i].created_at);
 	    	console.log(tweets[i].text);
+	    	console.log("----------------------------------------------------------------------------------------------------------------------------")
 	    	console.log("");
+	    	console.log("");	    	
 
 	    }
 	  }
@@ -65,13 +83,52 @@ function getspotify(song) {
 
 	    for (var i = 0; i < trackList.length; i++) {
 
+	    	console.log("----------------------------------------------------------------------------------------------------------------------------")
 	    	console.log("Artist: " + trackList[i].artists[0].name);
 	    	console.log("Song Title: " +trackList[i].name);
 	    	console.log("Preview: " +trackList[i].preview_url);
 	    	console.log("Album: " +trackList[i].album.name);
+	    	console.log("----------------------------------------------------------------------------------------------------------------------------")
+	    	console.log("");
 	    	console.log("");
 	}
 	    
   });
 
 }
+
+var request = require('request');
+
+function getMovie(movie) {
+
+  
+	request('http://www.omdbapi.com/?t=' + movie + '&y=&plot=full&tomatoes=true&apikey=40e9cece', function (error, response, body) {
+  // console.log('error:', error); // Print the error if one occurred 
+  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
+  // console.log('body:', body); // Print the HTML for the Google homepage. 
+  var bodyresponse = JSON.parse(body);
+  console.log("");
+  console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+  console.log("");
+  console.log('Title: ' + bodyresponse['Title']);
+  console.log('Year: ' + bodyresponse['Year']);
+  console.log('Rating: ' + bodyresponse['imdbRating']);
+  console.log('Ratings: ' + bodyresponse['Ratings'][1]['Value']);
+  console.log('Country: ' + bodyresponse['Country']);
+  console.log('Language: ' + bodyresponse['Language']);
+  console.log('Plot: ' + bodyresponse['Plot']);
+  console.log('Actors: ' + bodyresponse['Actors']);
+  console.log("");
+  console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+  console.log("");
+
+
+
+
+
+
+});
+
+}
+
+
