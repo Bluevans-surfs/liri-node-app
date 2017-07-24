@@ -2,6 +2,7 @@ var twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var request = require('request');
 var keys = require("./keys.js");
+var fs= require("fs");
 
 var client = new twitter({
   consumer_key: keys.twitterkeys.consumer_key,
@@ -33,7 +34,18 @@ if (command === "spotify-this-song") {
 
 	 } else {
 
-	 	getspotify("The Sign Ace of Base");
+				fs.readFile('./random.txt', 'utf8',function(err,data){
+
+					if(err){
+						console.log(err);
+					} else
+					{
+						getspotify(data);
+					}
+
+		
+});
+	 
 
 	 }
 	}
